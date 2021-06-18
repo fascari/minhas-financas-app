@@ -7,10 +7,12 @@ class Login extends React.Component {
         email: '',
         senha: ''
     }
+
     entrar = () => {
         console.log('Email: ', this.state.email);
         console.log('Senha: ', this.state.senha);
     }
+    
     render() {
         return (
             <div className="container">
