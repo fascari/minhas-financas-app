@@ -5,12 +5,13 @@ import Card from '../components/card'
 import FormGroup from '../components/form-group'
 
 import UsuarioService from '../app/service/usuarioService'
-import { AuthContext  } from '../main/authenticationProvider'
+import { AuthContext } from '../main/authenticationProvider'
+import { mensagemErro } from '../components/toastr';
+
 class Login extends React.Component {
     state = {
         email: '',
-        senha: '',
-        mensagemErro: null
+        senha: ''
     }
 
     constructor() {
@@ -26,7 +27,7 @@ class Login extends React.Component {
             this.context.iniciarSessao(response.data);
             this.props.history.push('/home');
         }).catch(erro => {
-            this.setState({ mensagemErro: erro.response.data });
+            mensagemErro(erro.response.data);
         })
     }
 
