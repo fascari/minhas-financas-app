@@ -1,6 +1,8 @@
 import React from "react";
-import Rotas from './rotas'
+import Routes from './routes'
 import Navbar from '../components/navbar'
+
+import AuthenticationProvider from "./authenticationProvider";
 
 import 'bootswatch/dist/flatly/bootstrap.css'
 import '../custom.css'
@@ -8,14 +10,14 @@ import '../custom.css'
 class App extends React.Component {
   render() {
     return (
-      <>
+      <AuthenticationProvider>
         <Navbar />
         <div>
           <div className="container">
-            <Rotas />
+            <Routes />
           </div>
         </div>
-      </>
+      </AuthenticationProvider>
     )
   };
 }
