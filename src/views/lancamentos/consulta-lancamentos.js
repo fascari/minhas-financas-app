@@ -4,19 +4,18 @@ import { withRouter } from 'react-router-dom'
 import Card from '../../components/card'
 import FormGroup from '../../components/form-group'
 import SelectMenu from '../../components/selectMenu'
+import * as messages from '../../components/toastr'
 
 import LancamentosTable from './lancamentosTable'
 import LancamentoService from '../../app/service/lancamentoService'
-
 import AuthService from '../../app/service/authService'
-import * as messages from '../../components/toastr'
 
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 
 class ConsultaLancamentos extends React.Component {
     state = {
-        ano: '',
+        ano: new Date().getFullYear(),
         mes: '',
         tipo: '',
         descricao: '',
@@ -83,6 +82,21 @@ class ConsultaLancamentos extends React.Component {
                 messages.mensagemSucesso('Lançamento deletado com sucesso!')
             }).catch(() => {
                 messages.mensagemErro('Ocorreu um erro ao tentar deletar o Lançamento')
+            })
+    }
+
+    alterarStatus = (lancamento, status) => {
+        this.service
+            .alterarStatus(lancamento.id, status)
+            .then(() => {
+                const lancamentos = this.state.lancamentos;
+                const index = lancamentos.indexOf(lancamento);
+                if (index !== -1) {
+                    lancamento['status'] = status;
+                    lancamentos[index] = lancamento
+                    this.setState({ lancamento });
+                }
+                messages.mensagemSucesso("Status atualizado com sucesso!")
             })
     }
 
