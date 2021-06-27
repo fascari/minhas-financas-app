@@ -14,10 +14,10 @@ class CadastroLancamentos extends React.Component {
         id: null,
         descricao: '',
         valor: '',
-        mes: '',
-        ano: '',
+        mes: new Date().getMonth() + 1,
+        ano: new Date().getFullYear(),
         tipo: '',
-        status: '',
+        status: 'PENDENTE',
         usuario: null,
         atualizando: false
     }
