@@ -104,6 +104,13 @@ class ConsultaLancamentos extends React.Component {
         this.props.history.push('/cadastro-lancamentos')
     }
 
+    handleChange = (event) => {
+        const value = event.target.value;
+        const name = event.target.name;
+
+        this.setState({ [name]: value })
+    }
+
     render() {
         const meses = this.service.obterListaMeses();
         const tipos = this.service.obterListaTipos();
@@ -124,14 +131,16 @@ class ConsultaLancamentos extends React.Component {
                                     id="inputAno"
                                     className="form-control"
                                     name="ano"
-                                    onChange={e => this.setState({ ano: e.target.value })}
+                                    value={this.state.ano}
+                                    onChange={this.handleChange}
                                     placeholder="Digite o Ano" />
                             </FormGroup>
 
                             <FormGroup htmlFor="inputMes" label="Mês: ">
                                 <SelectMenu id="inputMes"
                                     value={this.state.mes}
-                                    onChange={e => this.setState({ mes: e.target.value })}
+                                    name="mes"
+                                    onChange={this.handleChange}
                                     className="form-control"
                                     lista={meses} />
                             </FormGroup>
@@ -141,14 +150,16 @@ class ConsultaLancamentos extends React.Component {
                                     className="form-control"
                                     id="inputDesc"
                                     value={this.state.descricao}
-                                    onChange={e => this.setState({ descricao: e.target.value })}
+                                    name="descricao"
+                                    onChange={this.handleChange}
                                     placeholder="Digite a descrição" />
                             </FormGroup>
 
                             <FormGroup htmlFor="inputTipo" label="Tipo Lançamento: ">
                                 <SelectMenu id="inputTipo"
                                     value={this.state.tipo}
-                                    onChange={e => this.setState({ tipo: e.target.value })}
+                                    name="tipo"
+                                    onChange={this.handleChange}
                                     className="form-control"
                                     lista={tipos} />
                             </FormGroup>
