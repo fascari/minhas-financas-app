@@ -11,6 +11,9 @@ import LancamentoService from '../../app/service/lancamentoService'
 import AuthService from '../../app/service/authService'
 import * as messages from '../../components/toastr'
 
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
+
 class ConsultaLancamentos extends React.Component {
     state = {
         ano: '',
@@ -57,6 +60,32 @@ class ConsultaLancamentos extends React.Component {
             })
     }
 
+    editar = (id) => {
+        this.props.history.push(`/cadastro-lancamentos/${id}`)
+    }
+
+    abrirConfirmacao = (lancamento) => {
+        this.setState({ showConfirmDialog: true, lancamentoDeletar: lancamento })
+    }
+
+    cancelarDelecao = () => {
+        this.setState({ showConfirmDialog: false, lancamentoDeletar: {} })
+    }
+
+    deletar = () => {
+        this.service
+            .deletar(this.state.lancamentoDeletar.id)
+            .then(() => {
+                const lancamentos = this.state.lancamentos;
+                const index = lancamentos.indexOf(this.state.lancamentoDeletar)
+                lancamentos.splice(index, 1);
+                this.setState({ lancamentos: lancamentos, showConfirmDialog: false })
+                messages.mensagemSucesso('Lançamento deletado com sucesso!')
+            }).catch(() => {
+                messages.mensagemErro('Ocorreu um erro ao tentar deletar o Lançamento')
+            })
+    }
+
     preparaFormularioCadastro = () => {
         this.props.history.push('/cadastro-lancamentos')
     }
@@ -65,6 +94,12 @@ class ConsultaLancamentos extends React.Component {
         const meses = this.service.obterListaMeses();
         const tipos = this.service.obterListaTipos();
 
+        const confirmDialogFooter = (
+            <div>
+                <Button label="Confirmar" icon="pi pi-check" onClick={this.deletar} />
+                <Button label="Cancelar" icon="pi pi-times" onClick={this.cancelarDelecao} className="p-button-secondary" />
+            </div>
+        );
         return (
             <Card title="Consultar Lançamentos">
                 <div className="row">
@@ -128,6 +163,16 @@ class ConsultaLancamentos extends React.Component {
                                 alterarStatus={this.alterarStatus} />
                         </div>
                     </div>
+                </div>
+                <div>
+                    <Dialog header="Confirmação"
+                        visible={this.state.showConfirmDialog}
+                        style={{ width: '50vw' }}
+                        footer={confirmDialogFooter}
+                        modal={true}
+                        onHide={() => this.setState({ showConfirmDialog: false })}>
+                        Confirma a exclusão deste Lançamento?
+                    </Dialog>
                 </div>
             </Card>
         );
