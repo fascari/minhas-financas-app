@@ -36,6 +36,8 @@ function Routes(props) {
                 <AuthRoute isUsuarioAutenticado={props.isUsuarioAutenticado} path="/home" component={Home} />
                 <AuthRoute isUsuarioAutenticado={props.isUsuarioAutenticado} path="/consulta-lancamentos" component={ConsultaLancamentos} />
                 <AuthRoute isUsuarioAutenticado={props.isUsuarioAutenticado} path="/cadastro-lancamentos/:id?" component={CadastroLancamentos} />
+                
+                <Redirect to="/login" />
             </Switch>
         </HashRouter>
     )
